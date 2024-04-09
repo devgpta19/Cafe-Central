@@ -1,11 +1,96 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <script src='https://cdn.tailwindcss.com'></script>
+  <link href='https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css' rel='stylesheet' />
+  <style>
+    * {
+      margin: 0%;
+      padding: 0%;
+      box-sizing: border-box;
+      font-family: 'Gilroy';
+    }
+
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+    }
+
+    main {
+      min-height: 100%;
+    }
+  </style>
+  <title>Shop</title>
+</head>
+
+<body class="bg-zinc-800">
+  <nav class="w-full h-1 sticky top-0">
+    <header class="drop-shadow-md w-100 flex  px-8 pr-0 justify-between items-center bg-zinc-700">
+      <h1 class="text-blue-100">Shop</h1>
+      <div class="flex flex-row px-8 pr-0 justify-center items-center">
+        <a href="/wishlist" class="p-4 px-8">
+          <i class="ri-heart-line text-white "></i>
+        </a>
+        <a href="/cart" class="p-4 px-8">
+          <i class="ri-shopping-cart-line text-white "></i>
+        </a>
+      </div>
+    </header>
+  </nav>
+  <main class="flex flex-col justify-center items-center text-gray-300 >
+    <section class="flex flex-col justify-center items-center p-2 pt-4">
+      <div class="flex flex-col justify-center items-center w-full">
+        <a href="starters"><H1 onclick="openStarters()" >Starters</H1></a>
+        <br><br><br>
+        <a href="mainCourse"><H1 onclick="openMainCourse()" >MainCourse</H1></a>
+      </div>
+    </section>
+  </main>
+
+  <nav class="w-100% sticky bottom-0 text-white ">
+    <header class="w-100 bg-zinc-700 h-fit flex px-4 justify-between box-shadow-lg ">
+      <a href="/" class="p-4 flex flex-col items-center">
+        <i class="
+      text-xl
+      ri-home-3-line
+       "> </i>
+        <small>Home</small>
+      </a>
+      <a href="/createProduct" class="p-4 flex flex-col items-center">
+        <i class="
+      text-2xl
+      ri-add-line
+       "> </i>
+        <small>Add product</small>
+      </a>
+
+
+      <a href="/profile" class="p-4 items-center justify-center flex  flex-col items-center">
+        <i class="
+      text-xl
+      ri-user-line
+     
+      opacity-75
+       "> </i>
+        <small>Profile</small>
+      </a>
+    </header>
+  </nav>
+
+  <script>
+    function openStarters(){
+      console.log("Starters");
+    }
+
+    function openMainCourse(){
+      console.log("Main Course");
+    }
+  </script>
+
+</body>
+
 </html>
