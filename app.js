@@ -22,17 +22,8 @@ app.use(expressSession({
 }))
 app.use(passport.initialize());
 app.use(passport.session());
-// passport.serializeUser(userRout.serializeUser());
-// passport.deserializeUser(userRout.deserializeUser());
-passport.serializeUser((user, done) => {
-  done(null, user.id); // Serialize user ID to session
-});
-
-passport.deserializeUser((id, done) => {
-  User.findById(id, (err, user) => {
-    done(err, user); // Deserialize user from session
-  });
-});
+passport.serializeUser(usersRouter.serializeUser());
+passport.deserializeUser(usersRouter.deserializeUser());
 
 app.use(logger('dev'));
 app.use(express.json());
