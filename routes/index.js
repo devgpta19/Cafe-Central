@@ -3,6 +3,7 @@ var router = express.Router();
 const userModel = require('./users');
 const productModel = require('./product')
 
+const pro = require('./product')
 const users = require('./users');
 const passport = require('passport');
 const localStrategy = require('passport-local');
@@ -23,11 +24,8 @@ router.get('/register', function (req, res) {
   res.render('register', { title: 'Register' });
 })
 
-
 router.post('/register', function (req, res) {
   console.log(req.body);
-
-
   var userData = new userModel({
     username: req.body.username,
     accountType: req.body.isSeller == 'on' ? "seller" : "buyer"
@@ -70,24 +68,35 @@ function isSeller(req, res, next) {
   else res.redirect('/')
 }
 
+
+
 router.get('/createProduct', isloggedIn, isSeller, function (req, res) {
   res.render('createProduct', { title: 'Create Product' })
 })
 
 
-router.post('/createProduct', upload.single('image'), isloggedIn, isSeller, async function (req, res) {
+router.post('/createProduct', isloggedIn, isSeller, upload.single('image'), async function (req, res) {
   const user = await userModel.findOne({ username: req.session.passport.user });
   const productData = await productModel.create({
     name: req.body.name,
     price: req.body.price,
     user: user.id,
     description: req.body.description,
-    category: req.body.ismaincourse == 'on' ? "maincourse" : "starters",
+    category: req.body.ismaincourse === 'on' ? "maincourse" : "starters",
     images: req.files,
   })
+  console.log(user);
+  console.log(productData.category);
   await productData.save();
   res.redirect('/createProduct')
 })
+
+function ismaincourse(req, res, next) {
+  console.log("object");
+  if (req.pro.category === 'maincourse') return next();
+  else res.redirect('/')
+  console.log("object");
+}
 
 router.get('/starters', async function (req, res) {
   const user = await userModel.findOne({ username: req.session.passport.user });
