@@ -1,11 +1,196 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <script src='https://cdn.tailwindcss.com'></script>
+    <link href='https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css' rel='stylesheet' />
+    <style>
+        * {
+            margin: 0%;
+            padding: 0%;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+        }
+
+        main {
+            min-height: 100%;
+        }
+
+        .products {
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            row-gap: 2.5rem;
+        }
+
+        .product {
+            max-width: 350px;
+        }
+
+        #preview {
+            scroll-behavior: smooth;
+            scroll-snap-type: x mandatory;
+            max-height: 25rem;
+            aspect-ratio: 1/1;
+            gap: 2rem;
+        }
+
+        #preview img {
+            height: 100%;
+            width: 100%;
+            object-fit: contain;
+            scroll-snap-align: center;
+        }
+    </style>
+    <title>Shop</title>
 </head>
-<body>
-    <h1>CREATE PROJECT</h1>
+
+<body class="bg-zinc-800 text-zinc-200 ">
+    <nav class="w-full sticky top-0  ">
+        <header class="drop-shadow-md w-100 flex  px-8 pr-0 justify-between items-center bg-zinc-700">
+            <h1>Shop</h1>
+            <div class="flex flex-row px-8 pr-0 justify-center items-center">
+                <a href="/wishlist" class="p-4 px-8">
+                    <i class="ri-heart-line text-white "></i>
+                </a>
+                <a href="/cart" class="p-4 px-8">
+                    <i class="ri-shopping-cart-line text-white "></i>
+                </a>
+                <a href="/logout" class=" text-red-500 p-4 px-8">
+                    <i class="ri-logout-circle-r-line"></i>
+                </a>
+            </div>
+        </header>
+    </nav>
+
+
+    <main>
+        <section class="p-3">
+            <form action="/createProduct" method="post" >
+                <div class="form-group flex flex-col gap-2 mb-3">
+                    <label for="name">Name</label>
+                    <input class="form-control
+              border-2
+              border-slate-300
+              rounded-lg
+              p-2
+              w-full
+             border-none
+             outline-none
+             text-zinc-900
+              " id="name" type="text" name="name" placeholder="Enter product name">
+                </div>
+                <div class="form-group flex flex-col gap-2 mb-3">
+                    <label for="price">Price</label>
+                    <input class="form-control
+                  border-2
+                  border-slate-300
+                  rounded-lg
+                  p-2
+                  w-full
+               border-none
+               outline-none
+               text-zinc-900
+                  " id="price" type="number" name="price" placeholder="Enter product price">
+                </div>
+                <div class="form-group flex flex-col gap-2 mb-3">
+                    <label for="description">Description</label>
+                    <textarea class="form-control
+                      border-2
+                      border-slate-300
+                      rounded-lg
+                      p-2
+                      w-full
+                   border-none
+                   outline-none
+                   text-zinc-900
+                      " id="description" name="description" placeholder="Enter product description"></textarea>
+                </div>
+                <div class="mb-6 md:w-full flex gap-2 items-center">
+                    <input type="checkbox" name="ismainCourse">
+                    <label for="addProduct" class="block text-xs">Want to add item in Main Course ?</label>
+                  </div>
+                <div class="form-group flex flex-col gap-2 mb-3">
+                    <label for="image">Image</label>
+                    <input class="form-control
+                                          border-2
+                                          border-slate-300
+                                          rounded-lg
+                                          p-2
+                                          w-full
+                                          bg-zinc-900
+                                   border-none
+                                   outline-none" id="image" type="file" name="image" accept="image/*" multiple
+                        onchange="previewImages(event)" max="5">
+                </div>
+
+                <div id="preview" class="flex items-center overflow-x-auto"></div>
+
+                <script>
+                    function previewImages(event) {
+                        var preview = document.getElementById('preview');
+                        preview.innerHTML = '';
+                        if (event.target.files.length > 5) {
+                            alert('You can select only 5 images');
+                            event.target.value = '';
+                        } else {
+                            for (let i = 0; i < event.target.files.length; i++) {
+                                let reader = new FileReader();
+                                reader.onload = function () {
+                                    let img = document.createElement('img');
+                                    img.src = reader.result;
+                                    preview.appendChild(img);
+                                };
+                                reader.readAsDataURL(event.target.files[i]);
+                            }
+                        }
+                    }
+                </script>
+
+                <input class="bg-green-500 text-white rounded px-2 py-1 " type="submit" value="Create Product" >
+
+            </form>
+
+        </section>
+    </main>
+
+
+    <nav class="w-100% sticky bottom-0">
+        <header class="w-100 bg-zinc-700 h-fit flex px-4 justify-between box-shadow-lg ">
+            <a href="/" class="p-4 flex flex-col items-center">
+                <i class="
+            text-xl
+            ri-home-3-line
+             "> </i>
+                <small>Home</small>
+            </a>
+            <a href="/createProduct" class="p-4 flex flex-col items-center">
+                <i class="
+            text-2xl
+            ri-add-line
+             "> </i>
+                <small>Add product</small>
+            </a>
+
+
+            <a href="/profile" class="p-4 items-center justify-center flex  flex-col items-center">
+                <i class="
+            text-xl
+            ri-user-line
+           
+            opacity-75
+             "> </i>
+                <small>Profile</small>
+            </a>
+        </header>
+    </nav>
+
 </body>
+
 </html>
