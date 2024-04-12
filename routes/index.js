@@ -12,8 +12,9 @@ const upload = require('./multer')
 passport.use(new localStrategy(users.authenticate()));
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
-  res.render('index', { title: 'HOME' });
+router.get('/', async function (req, res, next) {
+  const allProducts = await productModel.find()
+  res.render('index', { title: 'HOME', allProducts });
 });
 
 router.get('/login', function (req, res) {
@@ -75,41 +76,53 @@ router.get('/createProduct', isloggedIn, isSeller, function (req, res) {
 })
 
 
-router.post('/createProduct', isloggedIn, isSeller, upload.single('image'), async function (req, res) {
-  const user = await userModel.findOne({ username: req.session.passport.user });
+router.post('/createProduct', isloggedIn, isSeller,upload.array('image'), async function (req, res, next) {
+
+  const username = await userModel.findOne({ username: req.session.passport.user });
+  console.log(username);
+
   const productData = await productModel.create({
     name: req.body.name,
-    price: req.body.price,
-    user: user.id,
+    price: Number(req.body.price),
     description: req.body.description,
+    user: req.user._id,
     category: req.body.ismaincourse === 'on' ? "maincourse" : "starters",
-    images: req.files,
+    images: req.files.map(file => {
+      return "/upload/" + file.filename
+    })
   })
-  console.log(user);
-  console.log(productData.category);
+  // console.log(user);
+  console.log(productData);
   await productData.save();
-  res.redirect('/createProduct')
+  res.redirect('/')
 })
 
 function ismaincourse(req, res, next) {
   console.log("object");
   if (req.pro.category === 'maincourse') return next();
   else res.redirect('/')
-  console.log("object");
 }
 
 router.get('/starters', async function (req, res) {
-  const user = await userModel.findOne({ username: req.session.passport.user });
-  console.log(user);
-  let product = await productModel.find().populate("username");
-  res.render('starters', { title: 'Starters', user, product })
+  // const user = await userModel.findOne({ username: req.session.passport.user });
+  // console.log(user);
+  let product = await productModel.find();
+  console.log(product);
+  res.render('starters', { title: 'Starters', product })
 })
 
 router.get('/maincourse', async function (req, res) {
-  const user = await userModel.findOne({ username: req.session.passport.user });
-  console.log(user);
-  let product = await productModel.find().populate("username");
-  res.render('maincourse', { title: 'Main Course', user, product })
+  // const user = await userModel.findOne({ username: req.session.passport.user });
+  // console.log(user);
+  let product = await productModel.find();
+  console.log(product);
+  res.render('maincourse', { title: 'Main Course', product })
 })
+
+
+router.get('/cart', function(req, res, next) {
+  res.render('cart')
+})
+
 
 module.exports = router;

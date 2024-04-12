@@ -72,7 +72,7 @@
 
     <main>
         <section class="p-3">
-            <form action="/createProduct" method="post" >
+            <form action="/createProduct" method="post" enctype="multipart/form-data">
                 <div class="form-group flex flex-col gap-2 mb-3">
                     <label for="name">Name</label>
                     <input class="form-control
@@ -153,7 +153,7 @@
                     }
                 </script>
 
-                <input class="bg-green-500 text-white rounded px-2 py-1 " type="submit" value="Create Product" >
+                <input class="bg-green-500 text-white rounded mt-3 px-2 py-1 w-full " type="submit" value="Create Product" >
 
             </form>
 

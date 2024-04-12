@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const plm = require('passport-local-mongoose');
 const productSchema = mongoose.Schema({
     name: String,
     price: Number,
@@ -17,5 +16,6 @@ const productSchema = mongoose.Schema({
     }],
     description: String
 });
-productSchema.plugin(plm);
+
+
 module.exports = mongoose.model('product', productSchema);

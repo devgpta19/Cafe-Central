@@ -14,6 +14,10 @@
       font-family: 'Gilroy';
     }
 
+    *::-webkit-scrollbar {
+      display: none;
+    }
+
     html,
     body {
       height: 100%;
@@ -45,14 +49,55 @@
     </header>
   </nav>
 
-  <main class="flex flex-col justify-center items-center text-gray-300 >
-    <section class="flex flex-col justify-center items-center p-2 pt-4">
-      <div class="flex flex-col justify-center items-center w-full">
-        <a href="starters"><H1 onclick="openStarters()" >Starters</H1></a>
-        <br><br><br>
-        <a href="mainCourse"><H1 onclick="openMainCourse()" >MainCourse</H1></a>
-      </div>
+  <main class="text-gray-300" >
+    <section class=" flex flex-col justify-center m-3 items-center p-2 pt-4">
+    <div class="flex flex-col justify-center items-center w-full">
+      <a href="starters">
+        <H1 onclick="openStarters()">Starters</H1>
+      </a>
+      <br><br><br>
+      <a href="mainCourse">
+        <H1 onclick="openMainCourse()">MainCourse</H1>
+      </a>
+    </div>
     </section>
+
+    <hr class="m-5" >
+
+    <h1 class="text-2xl text-bold m-4" >
+      All Items 
+    </h1>
+
+    <div class="flex flex-row products grid p-2 pt-4">
+      <div class="product w-100 rounded-md overflow-hidden">
+        <div class="images 100%">
+          <img class="w-100 aspect-3/4 object-contain"
+            src="https://images.pexels.com/photos/2702674/pexels-photo-2702674.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            alt="Not Found"
+            onerror="this.src='https://imgs.search.brave.com/gIbQrP0O3Ih-btS-iQxgOnHYsn9KL6prycDFXfK6KUw/rs:fit:860:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzA1LzUyLzM3LzE4/LzM2MF9GXzU1MjM3/MTg2N19Ma1ZtcU1F/Q2hSaE1NSERRMmRy/T1M4Y3doQVdlaGdW/Yy5qcGc';">
+        </div>
+        <div class="text p-2 truncate">
+          <h1 class="text-white">
+            Name
+          </h1>
+          <p class="opacity-50 text-gray-300 text-sm truncate">
+            description
+          </p>
+          <p class="opacity-50 text-gray-300 text-sm truncate">
+            @usernme
+          </p>
+        </div>
+        <div class="flex flex-col justify-between p-2 pt-0 gap-2">
+          <span class="text-lg text-gray-100 font-thin">₹
+            8000
+          </span>
+          <button class="bg-slate-100 opacity-75 uppercase text-sm px-4 py-2 rounded">Add to
+            cart</button>
+        </div>
+      </div>
+    </div>
+
+
   </main>
 
   <nav class="w-100% sticky bottom-0 text-white ">
@@ -71,7 +116,7 @@
        "> </i>
         <small>Add product</small>
 
-        <small class="text-gray-500" >( only for SELLER )</small>
+        <small class="text-gray-500">( only for SELLER )</small>
       </a>
 
 
@@ -88,11 +133,11 @@
   </nav>
 
   <script>
-    function openStarters(){
+    function openStarters() {
       console.log("Starters");
     }
 
-    function openMainCourse(){
+    function openMainCourse() {
       console.log("Main Course");
     }
   </script>
