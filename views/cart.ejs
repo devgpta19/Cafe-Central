@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <script src='https://cdn.tailwindcss.com'></script>
+  <link href='https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css' rel='stylesheet' />
+  <style>
+    * {
+      margin: 0%;
+      padding: 0%;
+      box-sizing: border-box;
+      font-family: 'Gilroy';
+    }
+
+    *::-webkit-scrollbar {
+      display: none;
+    }
+
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+    }
+
+    main {
+      min-height: 100%;
+    }
+  </style>
+  <title>Shop</title>
+</head>
+
+<body class="bg-zinc-800">
+  <nav class="w-full sticky top-0">
+    <header class="drop-shadow-md w-100 flex  px-8 pr-0 justify-between items-center bg-zinc-700">
+      <h1 class="text-blue-100">Shop</h1>
+      <div class="flex flex-row px-8 pr-0 justify-center items-center">
+        <a href="/wishlist" class="p-4 px-8">
+          <i class="ri-heart-line text-white "></i>
+        </a>
+        <a href="/cart" class="p-4 px-8">
+          <i class="ri-shopping-cart-line text-white "></i>
+        </a>
+        <a href="/logout" class=" text-red-500 p-4 px-8">
+          <i class="ri-logout-circle-r-line"></i>
+        </a>
+      </div>
+    </header>
+  </nav>
+  <main>
+    <section class="p-4 px-6 text-white">
+      <div class="items flex flex-col gap-10">
+        <div class="item flex flex-col gap-1">
+          <div class="top flex gap-3">
+            <div class="left w-20 flex-shrink-0 ">
+              <img class="h-20 w-20 rounded-md aspect-square object-cover"
+                src="https://images.pexels.com/photos/20723439/pexels-photo-20723439/free-photo-of-a-group-of-rams-laying-in-the-grass.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                alt="">
+            </div>
+            <div class="right truncate">
+              <h1 class="truncate text-xl">Deers</h1>
+              <p class="truncate leading-none opacity-50">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Porro, sed. Libero quam quidem eius exercitationem.</p>
+              <p class="text-light leading-loose mt-auto"> ₹11900 </p>
+            </div>
+          </div>
+          <div class="bottom flex gap-3 justify-end">
+            <label for="quantity_1" class="bg-zinc-600 flex gap-3 w-fit p-2 rounded-md ">
+              qty :
+              <input class="bg-zinc-600" style="width: 4ch;" type="Number" class="bg-transparent outline-none border-none" id="quantity_1"
+                value="1">
+            </label>
+
+            <button class="w-fit p-2 rounded-md bg-zinc-700 border-red-100"><i class="text-2xl text-red-500 ri-delete-bin-line"></i></button>
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="sticky bottom-[6.5rem] p-3 px-6 bg-zinc-500 flex justify-between items-center    "
+    style="border-bottom: 1px solid #000000;">
+    <h1 class="text-xl">
+      <small>Total :</small> ₹11900
+    </h1>
+    <button class="p-2 px-4 text-lg bg-green-500 rounded-md">place order</button>
+  </nav>
+
+  <nav class="w-100% sticky bottom-0 text-white ">
+    <header class="w-100 bg-zinc-700 h-fit flex px-4 justify-between box-shadow-lg ">
+      <a href="/" class="p-4 flex flex-col items-center">
+        <i class="
+    text-xl
+    ri-home-3-line
+     "> </i>
+        <small>Home</small>
+      </a>
+      <a href="/createProduct" class="p-4 flex flex-col items-center">
+        <i class="
+    text-2xl
+    ri-add-line
+     "> </i>
+        <small>Add product</small>
+
+        <small class="text-gray-500">( only for SELLER )</small>
+      </a>
+
+
+      <a href="/profile" class="p-4 items-center justify-center flex  flex-col items-center">
+        <i class="
+    text-xl
+    ri-user-line
+   
+    opacity-75
+     "> </i>
+        <small>Profile</small>
+      </a>
+    </header>
+  </nav>
+
+  <script>
+    function openStarters() {
+      console.log("Starters");
+    }
+
+    function openMainCourse() {
+      console.log("Main Course");
+    }
+  </script>
+
+</body>
+
+</html>
