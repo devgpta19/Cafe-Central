@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 const userModel = require('./users');
 const productModel = require('./product')
+const cartModel = require('./cart')
+const cartProductModel = require('./cartProduct')
 
 const pro = require('./product')
 const users = require('./users');
@@ -13,7 +15,7 @@ passport.use(new localStrategy(users.authenticate()));
 
 /* GET home page. */
 router.get('/', async function (req, res, next) {
-  const allProducts = await productModel.find()
+  const allProducts = await productModel.find();
   res.render('index', { title: 'HOME', allProducts });
 });
 
@@ -69,14 +71,11 @@ function isSeller(req, res, next) {
   else res.redirect('/')
 }
 
-
-
 router.get('/createProduct', isloggedIn, isSeller, function (req, res) {
   res.render('createProduct', { title: 'Create Product' })
 })
 
-
-router.post('/createProduct', isloggedIn, isSeller,upload.array('image'), async function (req, res, next) {
+router.post('/createProduct', isloggedIn, isSeller, upload.array('image'), async function (req, res, next) {
 
   const username = await userModel.findOne({ username: req.session.passport.user });
   console.log(username);
@@ -104,25 +103,67 @@ function ismaincourse(req, res, next) {
 }
 
 router.get('/starters', async function (req, res) {
-  // const user = await userModel.findOne({ username: req.session.passport.user });
-  // console.log(user);
   let product = await productModel.find();
   console.log(product);
   res.render('starters', { title: 'Starters', product })
 })
 
 router.get('/maincourse', async function (req, res) {
-  // const user = await userModel.findOne({ username: req.session.passport.user });
-  // console.log(user);
   let product = await productModel.find();
   console.log(product);
   res.render('maincourse', { title: 'Main Course', product })
 })
 
+router.get('/cart', isloggedIn, async function(req, res, next){
+  const userCart = await cartModel.findOne({
+    user: req.user._id
+  }).populate('products').populate({
+    path: "products",
+    populate: 'product'
+  })
 
-router.get('/cart', function(req, res, next) {
-  res.render('cart')
+  let totalPrice = 0
+
+  userCart.products.forEach(cartProduct => {
+    totalPrice += cartProduct.product.price * (cartProduct.quantity == 0 ? 1 : cartProduct.quantity)
+  })
+  res.render('cart', { userCart, totalPrice })
 })
 
+
+router.get('/addToCart/:productId', isloggedIn, async function (req, res, next) {
+  const productId = req.params.productId
+  let userCart = await cartModel.findOne({
+    user: req.user._id,
+  })
+  if (!userCart)
+    userCart = await cartModel.create({
+      user: req.user._id
+    })
+  let newCartProduct = await cartProductModel.findOne({
+    product: productId,
+    _id: { $in: userCart.products }   // CHECKING IF _id IS IN LOGGED IN USER'S cart ARRAY
+  })
+  if (newCartProduct) {
+    newCartProduct.quantity = newCartProduct.quantity + 1
+    await newCartProduct.save()
+  }
+  else {
+    newCartProduct = await cartProductModel.create({
+      product: productId,
+      quantity: 1
+    })
+    userCart.products.push(newCartProduct._id)
+    await userCart.save()
+  }
+  res.redirect('back');
+})
+
+router.post('/updateQuantity', isloggedIn, async (req, res, next) => {
+  await cartProductModel.findOneAndUpdate({ _id: req.body.cartProductId }, {
+    quantity: req.body.quantity
+  })
+  res.json({ message: "quantity updated" })
+})
 
 module.exports = router;

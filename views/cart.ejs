@@ -48,45 +48,59 @@
       </div>
     </header>
   </nav>
+
   <main>
     <section class="p-4 px-6 text-white">
       <div class="items flex flex-col gap-10">
+        <% userCart.products.forEach(cartProduct=>{ %>
         <div class="item flex flex-col gap-1">
           <div class="top flex gap-3">
             <div class="left w-20 flex-shrink-0 ">
-              <img class="h-20 w-20 rounded-md aspect-square object-cover"
-                src="https://images.pexels.com/photos/20723439/pexels-photo-20723439/free-photo-of-a-group-of-rams-laying-in-the-grass.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                alt="">
+              <img class="h-20 w-20 rounded-md aspect-square object-cover" src="<%= cartProduct.product.images[0] %>" alt="">
             </div>
             <div class="right truncate">
-              <h1 class="truncate text-xl">Deers</h1>
-              <p class="truncate leading-none opacity-50">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Porro, sed. Libero quam quidem eius exercitationem.</p>
-              <p class="text-light leading-loose mt-auto"> ₹11900 </p>
+              <h1 class="truncate text-xl"><%= cartProduct.product.name %></h1>
+              <p class="truncate leading-none opacity-50"><%= cartProduct.product.description %></p>
+              <p class="text-light leading-loose mt-auto"> ₹<%= cartProduct.product.price %> </p>
             </div>
           </div>
           <div class="bottom flex gap-3 justify-end">
-            <label for="quantity_1" class="bg-zinc-600 flex gap-3 w-fit p-2 rounded-md ">
+            <label for="quantity_1" class="flex gap-3 text-zinc-900 w-fit p-2 rounded-md border bg-slate-50">
               qty :
-              <input class="bg-zinc-600" style="width: 4ch;" type="Number" class="bg-transparent outline-none border-none" id="quantity_1"
-                value="1">
+              <input style="width: 4ch;" type="Number" class="bg-transparent text-zinc-900 outline-none border-none" id="quantity_1" value="00<%= cartProduct.quantity %>" oninput="((event)=>{
+                updateQuantity('<%= cartProduct._id %>',event.target.value)
+              })(event)">
             </label>
-
-            <button class="w-fit p-2 rounded-md bg-zinc-700 border-red-100"><i class="text-2xl text-red-500 ri-delete-bin-line"></i></button>
-
+            <a href="" class="w-fit p-2 rounded-md border bg-zinc-700 border-red-100"> <i class="text-xl text-red-600 font-extralight ri-delete-bin-6-line"> </i> </a>
           </div>
         </div>
+        <% }) %>
       </div>
     </section>
   </main>
-
-  <nav class="sticky bottom-[6.5rem] p-3 px-6 bg-zinc-500 flex justify-between items-center    "
-    style="border-bottom: 1px solid #000000;">
+  
+  <nav class="sticky bottom-[6.5rem] p-3 px-6 bg-slate-100 flex justify-between items-center    " style="border-bottom: 1px solid #aaa;">
     <h1 class="text-xl">
-      <small>Total :</small> ₹11900
+      <small>Total :</small> ₹<%= totalPrice %>
     </h1>
-    <button class="p-2 px-4 text-lg bg-green-500 rounded-md">place order</button>
+    <button class="p-2 px-4 text-lg bg-slate-200 rounded-md">place order</button>
   </nav>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js" integrity="sha512-PJa3oQSLWRB7wHZ7GQ/g+qyv6r4mbuhmiDb8BjSFZ8NZ2a42oTtAq5n0ucWAwcQDlikAtkub+tPVCw4np27WCg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  
+  <script>
+    async function updateQuantity(cartProductId, quantity) {
+      if (quantity > 0) {
+        const response = await axios.post('/updateQuantity', {
+          cartProductId,
+          quantity
+        })
+        console.log(response.data)
+      } else {
+        console.log('quantity less than zero')
+      }
+    }
+  </script>
 
   <nav class="w-100% sticky bottom-0 text-white ">
     <header class="w-100 bg-zinc-700 h-fit flex px-4 justify-between box-shadow-lg ">
@@ -119,16 +133,6 @@
       </a>
     </header>
   </nav>
-
-  <script>
-    function openStarters() {
-      console.log("Starters");
-    }
-
-    function openMainCourse() {
-      console.log("Main Course");
-    }
-  </script>
 
 </body>
 
