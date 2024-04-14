@@ -166,4 +166,10 @@ router.post('/updateQuantity', isloggedIn, async (req, res, next) => {
   res.json({ message: "quantity updated" })
 })
 
+router.get('/remove/:cartProductId', isloggedIn, async function(req, res, next){
+  console.log("remove");
+  await cartProductModel.findOneAndDelete({ _id: req.params.cartProductId })
+  res.redirect('back')
+})
+
 module.exports = router;
