@@ -36,12 +36,24 @@ router.post('/register', function (req, res) {
   userModel
     .register(userData, req.body.password)
     .then(function (registeredUser) {
-      passport.authenticate('local')(req, res, function () {
+      passport.authenticate('local')(req, res, async function () {
         if (registeredUser.accountType === 'seller') {
           res.redirect("/createProduct")
           return;
         }
-        res.render('index')
+        let userCart = await cartModel.findOne({
+          user: req.user._id
+        }).populate('products').populate({
+          path: "products",
+          populate: 'product'
+        })
+      
+        if (!userCart)
+          userCart = await cartModel.create({
+            user: req.user._id
+          })
+          await userCart.save();
+        res.render('login',{userCart})
       })
     })
 })
@@ -114,13 +126,20 @@ router.get('/maincourse', async function (req, res) {
   res.render('maincourse', { title: 'Main Course', product })
 })
 
-router.get('/cart', isloggedIn, async function(req, res, next){
-  const userCart = await cartModel.findOne({
+router.get('/cart', isloggedIn, async function (req, res, next) {
+
+  let userCart = await cartModel.findOne({
     user: req.user._id
   }).populate('products').populate({
     path: "products",
     populate: 'product'
   })
+
+  if (!userCart)
+    userCart = await cartModel.create({
+      user: req.user._id
+    })
+    await userCart.save();
 
   let totalPrice = 0
 
@@ -166,7 +185,7 @@ router.post('/updateQuantity', isloggedIn, async (req, res, next) => {
   res.json({ message: "quantity updated" })
 })
 
-router.get('/remove/:cartProductId', isloggedIn, async function(req, res, next){
+router.get('/remove/:cartProductId', isloggedIn, async function (req, res, next) {
   console.log("remove");
   await cartProductModel.findOneAndDelete({ _id: req.params.cartProductId })
   res.redirect('back')
